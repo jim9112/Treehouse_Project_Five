@@ -1,3 +1,5 @@
+const gallery = document.getElementById('gallery');
+
 fetch('https://randomuser.me/api/?results=12')
     .then(res => res.json())
     .then(data => {
@@ -9,8 +11,6 @@ fetch('https://randomuser.me/api/?results=12')
 
     // Creates the cards of the employee dir
     const createGallery = (userList) => {
-        const gallery = document.getElementById('gallery');
-        
         for(let i = 0; i<userList.length; i++) {
             const card = document.createElement('div');
             card.className = 'card';
@@ -19,4 +19,26 @@ fetch('https://randomuser.me/api/?results=12')
             card.innerHTML = cardHTML;
             gallery.append(card);
         }
+        modalTrigger(userList);
+    };
+    const modalTrigger = (userList) => {
+        gallery.addEventListener('click', (e) => {
+            if (e.target.className === 'card' || e.target.parentNode.parentNode.className === 'card' || e.target.parentNode.className === 'card'){
+            
+                createModal(userList);
+            }
+        });
+    };
+    const createModal = (userList) => {
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'modal-container';
+        modalHTML = `<div class="modal"><button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>`;
+        modalHTML += `<div class="modal-info-container"></div>`;
+        
+        
+        modalHTML += `</div>`;
+        modalContainer.innerHTML = modalHTML;
+        const body = document.querySelector('body');
+        body.append(modalContainer);
+        document.querySelector('#modal-close-btn').addEventListener('click', ()=> body.removeChild(body.lastChild));
     };
