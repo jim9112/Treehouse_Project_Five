@@ -1,5 +1,7 @@
 const gallery = document.getElementById('gallery');
+const body = document.querySelector('body');
 
+// AJAX request with fetch
 fetch('https://randomuser.me/api/?results=12&nat=us')
     .then(res => res.json())
     .then(data => {
@@ -27,24 +29,44 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
     const createModal = (userList, i) => {
         const modalContainer = document.createElement('div');
         modalContainer.className = 'modal-container';
+        // build modal contents
         modalHTML = `<div class="modal"><button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>`;
+        // add picture
         modalHTML += `<div class="modal-info-container"><img class="modal-img" src="${userList[i].picture.large}" alt="profile picture">`;
+        // add name   
         modalHTML += `<h3 id="name" class="modal-name cap">${userList[i].name.first} ${userList[i].name.last}</h3>`;
+        // add email   
         modalHTML += `<p class="modal-text">${userList[i].email}</p>`;
+        // add city
         modalHTML += `<p class="modal-text cap">${userList[i].location.city}</p><hr>`;
-        modalHTML += `<p class="modal-text">${userList[i].phone}</p>`;
+        // add cell
+        modalHTML += `<p class="modal-text">${userList[i].cell}</p>`;
+        // add address
         modalHTML += `<p class="modal-text cap">${userList[i].location.street}, ${userList[i].location.city}, ${userList[i].location.state} ${userList[i].location.postcode}</p>`;
+        // reformat birtday and add birthday
         var bDayRaw = userList[i].dob.date.slice(0,userList[i].dob.date.indexOf("T")).split("-");
         var bDayFinal = `${bDayRaw[1]}/${bDayRaw[2]}/${bDayRaw[0]}`;
         modalHTML += `<p class="modal-text">Birthday: ${bDayFinal}</p>`;
+        modalHTML += `</div><div id="cycle">`;
+        
+        
+        // adds previous button only when not the first record and add next button only when not the last record
+        if (i>0){
+            modalHTML += `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>`;
+        }
+        if (i< userList.length-1) {
+            modalHTML +=`<button type="button" id="modal-next" class="modal-next btn">Next</button>`;
+        }
         modalHTML += `</div></div>`;
         modalContainer.innerHTML = modalHTML;
-        const body = document.querySelector('body');
         body.append(modalContainer);
-        document.querySelector('#modal-close-btn').onclick = () => body.removeChild(body.lastChild);
+        document.querySelector('#modal-close-btn').onclick = () => deletModal();
+        cycleModal(userList, i);
     };
-
-
+    // removes current modal
+    const deletModal = () => body.removeChild(body.lastChild);
+    
+    // triggers event listeners
     const modalTrigger = (userList) => {
         for (i = 0; i<gallery.children.length; i++) { 
             ((i) => {
@@ -53,4 +75,19 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
             };
         })(i);
         }
+    };
+
+    // event listener for previous and next button
+    const cycleModal = (userList, i) => {
+        document.getElementById('cycle').onclick = (e) => {
+            if(e.target.id === 'modal-prev') {
+                i--;
+                deletModal();
+                createModal(userList, i);
+            } else if(e.target.id === 'modal-next') {
+                i++;
+                deletModal();
+                createModal(userList, i);
+            }
+        };
     };
