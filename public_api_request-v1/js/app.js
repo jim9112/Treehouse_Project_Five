@@ -6,19 +6,20 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
     .then(res => res.json())
     .then(data => {
         const userList = data.results;
-        console.log(userList);
         createGallery(userList);
         searchBox(userList);
     });
 
+    // add search box
     const searchBox = (userList) => {
         const searchContainer = document.querySelector('.search-container');
         searchContainer.innerHTML = '<form action="#" method="get"><input type="search" id="search-input" class="search-input" placeholder="Search..."><input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit"></form>';
         const searchBox = document.getElementById('search-input');
+        // event listener for searchbox
         searchBox.onkeyup = () => {
             for(i=0; i<gallery.children.length; i++) {
                 var name = userList[i].name.first + ' ' + userList[i].name.last;
-                
+                // toggle gallery base on search results
                 if (searchBox.value === '') {
                     gallery.children[i].style.display = '';
                 }
@@ -30,7 +31,7 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
             }
         };
     };
-    
+
     // Creates the cards of the employee dir
     const createGallery = (userList) => {
         for(let i = 0; i<userList.length; i++) {
@@ -110,3 +111,7 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
             }
         };
     };
+
+
+    // change background color (extra credit)
+    body.style = "background: rgba(91, 152, 171, 0.9)";
