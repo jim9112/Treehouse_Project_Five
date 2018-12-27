@@ -51,24 +51,21 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
         const modalContainer = document.createElement('div');
         modalContainer.className = 'modal-container';
         // build modal contents
-        modalHTML = `<div class="modal"><button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>`;
-        // add picture
-        modalHTML += `<div class="modal-info-container"><img class="modal-img" src="${userList[i].picture.large}" alt="profile picture">`;
-        // add name   
-        modalHTML += `<h3 id="name" class="modal-name cap">${userList[i].name.first} ${userList[i].name.last}</h3>`;
-        // add email   
-        modalHTML += `<p class="modal-text">${userList[i].email}</p>`;
-        // add city
-        modalHTML += `<p class="modal-text cap">${userList[i].location.city}</p><hr>`;
-        // add cell
-        modalHTML += `<p class="modal-text">${userList[i].cell}</p>`;
-        // add address
-        modalHTML += `<p class="modal-text cap">${userList[i].location.street}, ${userList[i].location.city}, ${userList[i].location.state} ${userList[i].location.postcode}</p>`;
+        modalHTML = `<div class="modal">
+                        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                        <div class="modal-info-container">
+                            <img class="modal-img" src="${userList[i].picture.large}" alt="profile picture">
+                            <h3 id="name" class="modal-name cap">${userList[i].name.first} ${userList[i].name.last}</h3>
+                            <p class="modal-text">${userList[i].email}</p>
+                            <p class="modal-text cap">${userList[i].location.city}</p>
+                            <hr>
+                            <p class="modal-text">${userList[i].cell}</p>
+                            <p class="modal-text cap">${userList[i].location.street}, ${userList[i].location.city}, ${userList[i].location.state} ${userList[i].location.postcode}</p>`;
         // reformat birtday and add birthday
         var bDayRaw = userList[i].dob.date.slice(0,userList[i].dob.date.indexOf("T")).split("-");
         var bDayFinal = `${bDayRaw[1]}/${bDayRaw[2]}/${bDayRaw[0]}`;
-        modalHTML += `<p class="modal-text">Birthday: ${bDayFinal}</p>`;
-        modalHTML += `</div><div id="cycle">`;        
+        modalHTML += `<p class="modal-text">Birthday: ${bDayFinal}</p>
+                      </div><div id="cycle">`;        
         // adds previous button only when not the first record and add next button only when not the last record
         if (i>0){
             modalHTML += `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>`;
